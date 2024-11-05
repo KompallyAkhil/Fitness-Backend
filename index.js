@@ -8,9 +8,14 @@ import bcrypt from "bcrypt";
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT;
-app.use(cors());
 app.use(express.json());
-
+app.options('*', cors());
+const allowedOrigins = ["http://localhost:3000","https://fitness-bot-lilac.vercel.app"]
+app.use(cors({
+    origin:allowedOrigins,
+    methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
+    credentials: true,
+}))
 (async()=>{
     try {
         await mongoose.connect(`${process.env.MONGODB_URL}/${process.env.DB_NAME}`);
