@@ -15,7 +15,7 @@ app.use(cors({
     origin:allowedOrigins,
     methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
     credentials: true,
-}))
+}));
 (async()=>{
     try {
         await mongoose.connect(`${process.env.MONGODB_URL}/${process.env.DB_NAME}`);
