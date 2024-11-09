@@ -77,7 +77,7 @@ app.post('/SignIn', async (req,res)=>{
     }
     const findPassword = await bcrypt.compare(Password,findUser.Password);
     if(findPassword){
-        return res.status(409).json({loginUsername : Username,loginStatus:true});
+        return res.json({loginUsername : Username,loginStatus:true});
     }
     else{
         return res.status(409).json({message:"Incorrect Password"});
