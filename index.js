@@ -77,10 +77,10 @@ app.post('/SignIn', async (req,res)=>{
     }
     const findPassword = await bcrypt.compare(Password,findUser.Password);
     if(findPassword){
-        return res.json({loginUsername : Username,loginStatus:true});
+        return res.status(409).json({loginUsername : Username,loginStatus:true});
     }
     else{
-        return res.json({message:"Incorrect Password"});
+        return res.status(409).json({message:"Incorrect Password"});
     }
 })
 app.get('/chat',async (req,res)=>{
