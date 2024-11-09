@@ -73,7 +73,7 @@ app.post('/SignIn', async (req,res)=>{
     }
     const findUser = await Login.findOne({Username});
     if(!findUser){
-        return res.json({message:"User not found"});
+        return res.status(409).json({message:"User not found"});
     }
     const findPassword = await bcrypt.compare(Password,findUser.Password);
     if(findPassword){
