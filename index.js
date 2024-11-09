@@ -42,7 +42,7 @@ async function askQuestion(UserInput){
 app.post('/Register', async (req, res) => {
     const { Username, EmailID, Password , ConfirmPassword } = req.body;
     if(!Username || !EmailID || !Password){
-        return res.json({message : "Incomplete Information"});
+        return res.status(409).json({message : "Incomplete Information"});
     }
     const newUser = await Login.findOne({Username});
     if(newUser){
