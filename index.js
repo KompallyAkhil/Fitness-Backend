@@ -69,7 +69,7 @@ app.post('/Register', async (req, res) => {
 app.post('/SignIn', async (req,res)=>{
     const {Username,Password} = req.body;
     if(!Username || !Password){
-        return res.status(409).json({message : "Give valid Info"})
+        return res.status(409).json({message : "Usaername or Password cannot be empty"})
     }
     const findUser = await Login.findOne({Username});
     if(!findUser){
