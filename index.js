@@ -30,22 +30,7 @@ async function askQuestion(UserInput){
     try{
         const genAI = new GoogleGenerativeAI(process.env.API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-        const prompt = `
-        The user has asked the following question: ${UserInput}. 
-
-        Respond if the question falls under any of these categories:
-        1. **Workouts**: This includes exercise routines, tips for specific muscle groups, fitness advice, or guidance for achieving fitness goals.
-        2. **Meal Plans**: This covers diet plans, healthy recipes, meal suggestions, or personalized nutrition strategies.
-        3. **Nutritional Information**: Questions like "What nutrients are in eggs?" or "How much protein does a banana have?" related to food composition, calorie counts, or health benefits.
-
-        If the user asks for a video reference, include a link to a relevant video resource (if available).
-
-        For all fitness-related queries, provide a concise and accurate response. If the question does not pertain to workouts, meal plans, or nutrition, respond with:
-        "I specialize in questions about workouts, meal plans, and food nutrition. Please refine your query accordingly."
-
-        Keep responses friendly, professional, and directly relevant to the user's input.
-        `;
-
+        const prompt = `The user has asked a question: ${UserInput}. Respond if the question relates to workouts (such as exercise routines, tips for specific muscle groups, or fitness advice), meal plans (including diet plans, meal suggestions, or healthy recipes), or nutritional information about foods (like "What nutrients are in eggs?" or "How much protein does a banana have?"). Provide a brief and relevant answer to fitness-related queries also provide video reference if user asked, and if the question is not related to workouts, meals, or nutrition, respond with "I can assist only with questions about workouts, meal plans, and food nutrition."`;
         const result = await model.generateContent(prompt);
         return result.response.text()
     }
