@@ -8,9 +8,9 @@ dotenv.config();
 const PORT = process.env.PORT;
 app.use(express.json());
 app.options('*', cors());
+const allowedOrigins = ["http://localhost:3000","https://fitness-bot-lilac.vercel.app"]
 import signIn from "./Routes/signin.js";
 import Register from "./Routes/Register.js";
-const allowedOrigins = ["http://localhost:3000","https://fitness-bot-lilac.vercel.app"]
 app.use(cors({
     origin:allowedOrigins,
     methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
