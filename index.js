@@ -3,13 +3,13 @@ import cors from "cors";
 import dotenv from "dotenv";
 import {GoogleGenerativeAI} from "@google/generative-ai"
 import mongoose from "mongoose";
-import Login from "./model/User.js";
-import bcrypt from "bcrypt";
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT;
 app.use(express.json());
 app.options('*', cors());
+import signIn from "./Routes/signin.js";
+import Register from "./Routes/Register.js";
 const allowedOrigins = ["http://localhost:3000","https://fitness-bot-lilac.vercel.app"]
 app.use(cors({
     origin:allowedOrigins,
@@ -25,7 +25,6 @@ app.use(cors({
     }
 })();
 
-
 async function askQuestion(UserInput){
     try{
         const genAI = new GoogleGenerativeAI(process.env.API_KEY);
@@ -38,51 +37,8 @@ async function askQuestion(UserInput){
         console.log(error)
     }
 }
-
-app.post('/Register', async (req, res) => {
-    const { Username, EmailID, Password , ConfirmPassword } = req.body;
-    if(!Username || !EmailID || !Password){
-        return res.status(409).json({message : "Incomplete Information"});
-    }
-    const newUser = await Login.findOne({Username});
-    if(newUser){
-        return res.status(409).json({message:"Username already exists"});
-    }
-    const newEmail = await Login.findOne({EmailID});
-    if(newEmail){
-        return res.status(409).json({message:"Email already taken"});
-    }
-    if(Password !== ConfirmPassword){
-        return res.status(409).json({message : "Password does not match"})
-    }
-    if(Password.length < 7){
-        return res.status(409).json({message : "Password is too short"})
-    }
-    const hashedPassword = await bcrypt.hash(Password,10);
-
-    const newUserRegister = new Login({Username,EmailID,Password:hashedPassword});
-
-    await newUserRegister.save()
- 
-    res.json({ message: "User registered successfully!" }); 
-});
-app.post('/SignIn', async (req,res)=>{
-    const {Username,Password} = req.body;
-    if(!Username || !Password){
-        return res.status(409).json({message : "Username or Password cannot be empty"})
-    }
-    const findUser = await Login.findOne({Username});
-    if(!findUser){
-        return res.status(409).json({message:"User not found"});
-    }
-    const findPassword = await bcrypt.compare(Password,findUser.Password);
-    if(findPassword){
-        return res.json({loginUsername : Username,loginStatus:true});
-    }
-    else{
-        return res.status(409).json({message:"Incorrect Password"});
-    }
-})
+app.use('/SignIn',signIn);
+app.use('/Register',Register);
 app.get('/chat',async (req,res)=>{
     const name = req.query.text;
     try {
