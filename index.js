@@ -10,8 +10,6 @@ dotenv.config();
 const PORT = process.env.PORT;
 app.use(express.json());
 app.options('*', cors());
-import signIn from "./Routes/signin.js";
-import Register from "./Routes/Register.js";
 const allowedOrigins = ["http://localhost:3000","https://fitness-bot-lilac.vercel.app"]
 app.use(cors({
     origin:allowedOrigins,
@@ -40,8 +38,6 @@ async function askQuestion(UserInput){
         console.log(error)
     }
 }
-// app.use('/SignIn',signIn);
-// app.use('/Register',Register)
 app.post('/Register', async (req, res) => {
     const { Username, EmailID, Password , ConfirmPassword } = req.body;
     if(!Username || !EmailID || !Password){
